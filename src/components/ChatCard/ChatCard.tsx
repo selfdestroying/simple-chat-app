@@ -1,16 +1,69 @@
-import { Card, CardBody, CardHeader, Center } from '@chakra-ui/react'
+import {
+	Box,
+	Card,
+	CardBody,
+	CardHeader,
+	Center,
+	Stack,
+	Text,
+} from '@chakra-ui/react'
+import { observer } from 'mobx-react-lite'
+import { useContext, useEffect, useRef } from 'react'
+import { Context } from '../../main'
+import { supabase } from '../../supabase/supabase'
 import ChatFooter from './ChatFooter/ChatFooter'
 
-const ChatCard = () => {
+const ChatCard = observer(() => {
+	const { store } = useContext(Context)
+	const messagesEndRef = useRef(null)
+	const scrollToBottom = () => {
+		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+	}
+
+	useEffect(() => {
+		scrollToBottom()
+	}, [store.messages])
+
+	useEffect(() => {
+		const channel = supabase
+			.channel('public:chat')
+			.on(
+				'postgres_changes',
+				{
+					event: '*',
+					schema: 'public',
+					table: 'messages',
+				},
+				payload => {
+					console.log(payload)
+					store.getMessages()
+				}
+			)
+			.subscribe()
+		store.getMessages()
+	}, [])
+
 	return (
 		<Center h={'100%'}>
-			<Card h={'100%'}>
+			<Card h={'100%'} w={'sm'}>
 				<CardHeader>Chat</CardHeader>
-				<CardBody>Messages</CardBody>
+				<CardBody overflowY={'scroll'}>
+					<Stack>
+						{store.messages.map(message => {
+							return (
+								<Box key={message.id}>
+									<Text color={'gray.500'}>{message.user_id}</Text>
+									<Text>{message.message}</Text>
+								</Box>
+							)
+						})}
+					</Stack>
+					<div ref={messagesEndRef} />
+				</CardBody>
 				<ChatFooter />
 			</Card>
 		</Center>
 	)
-}
+})
 
 export default ChatCard

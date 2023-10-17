@@ -5,26 +5,30 @@ import {
 	InputGroup,
 	InputRightElement,
 } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { AiOutlineSend } from 'react-icons/ai'
+import { Context } from '../../../main'
 
 const ChatFooter = () => {
 	const [message, setMessage] = useState('')
-
+	const { store } = useContext(Context)
 	return (
 		<CardFooter>
 			<form
 				onSubmit={e => {
 					e.preventDefault()
-					if (message) {
-						console.log(message)
+					if (message != '') {
+						store.sendMessage(message)
 					}
+					setMessage('')
 				}}
+				style={{ width: '100%' }}
 			>
 				<InputGroup>
 					<Input
 						placeholder='Enter message'
 						onChange={e => setMessage(e.target.value)}
+						value={message}
 					/>
 					<InputRightElement>
 						<IconButton

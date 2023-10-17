@@ -1,5 +1,6 @@
 import { makeAutoObservable } from 'mobx'
 import AuthService from '../service/AuthService'
+import MessageService from '../service/MessageService'
 
 interface MyUser {
 	email?: string | undefined
@@ -10,8 +11,17 @@ interface MyInvalid {
 	message: string
 }
 
+interface MyMessage {
+	channel_id: number
+	id: number
+	inserted_at: string
+	message: string
+	user_id: string
+}
+
 export default class Store {
 	user = {} as MyUser
+	messages = [] as MyMessage[]
 	isAuth = false
 	isLoading = false
 	isInvalid: MyInvalid = {
@@ -35,6 +45,10 @@ export default class Store {
 
 	setInvalid(isInvalid: MyInvalid) {
 		this.isInvalid = isInvalid
+	}
+
+	setMessages(messages: MyMessage[]) {
+		this.messages = messages
 	}
 
 	async registration(email: string, password: string) {
@@ -93,5 +107,16 @@ export default class Store {
 
 	async google() {
 		await AuthService.google()
+	}
+
+	async getMessages() {
+		const messages = await MessageService.getMessages()
+		console.log(messages)
+
+		this.setMessages(messages)
+	}
+
+	async sendMessage(message: string) {
+		await MessageService.sendMessage(message)
 	}
 }

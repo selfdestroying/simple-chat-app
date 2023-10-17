@@ -152,7 +152,9 @@ const LoginForm = observer(() => {
 								bg: 'whiteAlpha.900',
 							}}
 						/>
-						<Button flex={'1'}>Нажми на меня!</Button>
+						<Button flex={'1'} onClick={() => store.getMessages()}>
+							Нажми на меня!
+						</Button>
 					</ButtonGroup>
 				</Stack>
 			</CardBody>
