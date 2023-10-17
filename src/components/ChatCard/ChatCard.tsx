@@ -17,6 +17,8 @@ const ChatCard = observer(() => {
 	const { store } = useContext(Context)
 	const messagesEndRef = useRef(null)
 	const scrollToBottom = () => {
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		//@ts-ignore
 		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
 	}
 
@@ -41,6 +43,10 @@ const ChatCard = observer(() => {
 			)
 			.subscribe()
 		store.getMessages()
+
+		return () => {
+			channel.unsubscribe()
+		}
 	}, [])
 
 	return (

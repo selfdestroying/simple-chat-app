@@ -112,7 +112,8 @@ export default class Store {
 	async getMessages() {
 		const messages = await MessageService.getMessages()
 		console.log(messages)
-
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
 		this.setMessages(messages)
 	}
 
