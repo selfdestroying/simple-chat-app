@@ -47,6 +47,9 @@ export default class AuthService {
 	static async discord() {
 		const { data } = await supabase.auth.signInWithOAuth({
 			provider: 'discord',
+			options: {
+				redirectTo: 'simple-chat-app-blue.vercel.app',
+			},
 		})
 
 		return { data }
@@ -55,6 +58,9 @@ export default class AuthService {
 	static async google() {
 		const { data } = await supabase.auth.signInWithOAuth({
 			provider: 'google',
+			options: {
+				redirectTo: 'simple-chat-app-blue.vercel.app',
+			},
 		})
 
 		return { data }
