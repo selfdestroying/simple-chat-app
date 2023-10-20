@@ -1,17 +1,29 @@
 import {
 	CardFooter,
 	IconButton,
-	Input,
 	InputGroup,
 	InputRightElement,
+	Textarea,
 } from '@chakra-ui/react'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { AiOutlineSend } from 'react-icons/ai'
 import { Context } from '../../../main'
+import './ChatFooter.css'
 
 const ChatFooter = () => {
 	const [message, setMessage] = useState('')
 	const { store } = useContext(Context)
+	useEffect(() => {
+		const tx = document.getElementsByTagName('textarea')
+		for (let i = 0; i < tx.length; i++) {
+			tx[i].addEventListener('input', OnInput, false)
+		}
+
+		function OnInput(this: HTMLTextAreaElement) {
+			this.style.height = '0'
+			this.style.height = this.scrollHeight + 'px'
+		}
+	}, [message])
 	return (
 		<CardFooter>
 			<form
@@ -25,10 +37,16 @@ const ChatFooter = () => {
 				style={{ width: '100%' }}
 			>
 				<InputGroup>
-					<Input
+					<Textarea
+						id='autoresizing'
 						placeholder='Enter message'
-						onChange={e => setMessage(e.target.value)}
+						onChange={e => {
+							setMessage(e.target.value)
+						}}
 						value={message}
+						resize={'none'}
+						maxH={'5rem'}
+						minH={'1rem'}
 					/>
 					<InputRightElement>
 						<IconButton
