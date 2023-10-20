@@ -32,7 +32,7 @@ const ProfileCard = observer(() => {
 					alignItems={'center'}
 				>
 					<Text>
-						{emoji.random().emoji} {store.user.email}
+						{emoji.random().emoji} {store?.user?.email}
 					</Text>
 					<IconButton
 						ml={'1.5'}
