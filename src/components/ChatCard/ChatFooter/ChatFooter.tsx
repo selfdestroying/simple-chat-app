@@ -47,6 +47,15 @@ const ChatFooter = () => {
 						resize={'none'}
 						maxH={'5rem'}
 						minH={'1rem'}
+						onKeyDown={e => {
+							if (e.key === 'Enter' && !e.shiftKey) {
+								e.preventDefault()
+								if (message != '') {
+									store.sendMessage(message)
+								}
+								setMessage('')
+							}
+						}}
 					/>
 					<InputRightElement>
 						<IconButton
