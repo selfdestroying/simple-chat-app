@@ -8,6 +8,7 @@ import {
 import { useContext, useEffect, useState } from 'react'
 import { AiOutlineSend } from 'react-icons/ai'
 import { Context } from '../../../main'
+import './ChatFooter.css'
 
 const ChatFooter = () => {
 	const [message, setMessage] = useState('')
